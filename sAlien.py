@@ -37,18 +37,19 @@ def sendPost(method, data):
             response = r.post('https://community.steam-api.com/ITerritoryControlMinigameService/{}/v0001/'.format(method), data=data, timeout=10).text
             flag = 0
         except:
-#            logging.debug("Something went Wrong! Retry...")
             print("Retry....")
             time.sleep(2)
             count += 1
     if count == 5:
-#        logging.debug("Failed to communicate after 5 times, return...")
         print("Service temporarily not reachable, plz retry a few mins later. exit...")
         sendNote("salienError", "Service temporarily not reachable, plz retry a few mins later.")
         exit()
-    response = json.loads(response)['response']
+    try:
+        response = json.loads(response)['response']
+    except json.decoder.JSONDecodeError:
+        print("Got an jsonDecoder Error, response: {}".format(response))
+        return False, {}
     if response == {}:
-#       longging.debug("Empty response! return...")
         print("Got an empty response, return...")        
         return False, response
     else:
