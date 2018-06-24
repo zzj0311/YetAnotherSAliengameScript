@@ -81,7 +81,11 @@ def getPlanetInfo():
     print("current active planet: {0}, player score: {1}/{2}(lv: {3}), time on planet {0}: {4}".format(id, cScore, nxtScore, lvl, timeonPlanet))
     resp = r.get("https://community.steam-api.com/ITerritoryControlMinigameService/GetPlanet/v0001/?id={}&language=schinese".format(id)).text
     resp = json.loads(resp)['response']
-    return sorted([i for i in resp['planets'][0]['zones'] if i['capture_progress'] < 0.95], key = lambda x: x['difficulty'], reverse=True)[0]['zone_position']
+    try:
+        return sorted([i for i in resp['planets'][0]['zones'] if i['capture_progress'] < 0.95], key = lambda x: x['difficulty'], reverse=True)[0]['zone_position']
+    except IndexError:
+        sendPost("LeaveGame", {'access_token':args.token, 'game_id':id})
+        return -1
 
 def waitAndRetry():
     id = getPlanetInfo()
