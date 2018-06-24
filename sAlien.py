@@ -118,6 +118,8 @@ def sendScore(futureScore):
         print("Send score failed, retry...")
         time.sleep(1)
         timeinZone = getPlanetInfoinZone()
+        if timeinZone == -1:
+            break
         if 120 - timeinZone < -10:
             print("Failed")
             return
