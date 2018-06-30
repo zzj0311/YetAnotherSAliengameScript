@@ -1,6 +1,8 @@
 # YetAnotherSAliengameScript
 A python based script to auto send score to the steam summer sale saliengame
 
+# 妈的老子毕业忙的要死你tm出个boss是不是有毒啊
+
 ## Usage
 ```
 python3 sAlien.py -k YOURTOKEN -s SERVERJIANGSCKEY
