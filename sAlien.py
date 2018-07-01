@@ -96,17 +96,20 @@ def waitAndRetry():
         if count % 60 == 0:
             sendNote("salienCritical!", "One Planet is over, plz enter a new one manually")
         count += 1
+    return id
 
 def joinZone():
     id = getPlanetInfo()
     if id == -1:
         print("current planet is over, wait until enter a new one!")
-        waitAndRetry()
+        id = waitAndRetry()
     flag, resp = sendPost("JoinZone", {'zone_position':id, 'access_token':args.token})
+    counter = 1
     while not flag:
         print("Wait until entity available!")
-        time.sleep(5)
+        time.sleep(min(5 * counter, 60))
         flag, resp = sendPost("JoinZone", {'zone_position':id, 'access_token':args.token})
+        counter += 1
     
     print("join zone success! current in zone {0}, wait around 120s and send score: {1}".format(id, scoreList[resp['zone_info']['difficulty']-1]))
     return scoreList[resp['zone_info']['difficulty']-1]
